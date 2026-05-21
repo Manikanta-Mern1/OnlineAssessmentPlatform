@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Environment secrets (CRUCIAL: Prevents API keys/DB passwords leaking)
+.env
+.env.local
+
+# Server logs
+logs/
+*.log
+npm-debug.log*
+
+# Optional: Local databases (if using SQLite)
+*.sqlite
+*.sqlite3
+
+# Editor/System files
+.vscode/
+.idea/
+.DS_Store
