@@ -66,6 +66,15 @@ app.use('/api/result', resultRoute)
 const PORT = process.env.PORT || 5000;
 
 const startServer = () => {
+    const nodeMajor = Number(process.version.slice(1).split(".")[0]);
+    console.log(`Node ${process.version}`);
+    console.log(`MONGO_URI set: ${Boolean(process.env.MONGO_URI)}`);
+    if (nodeMajor > 20) {
+        console.warn(
+            "Warning: Use Node 20 on Render. Add environment variable NODE_VERSION=20"
+        );
+    }
+
     app.listen(PORT, () => {
         console.log(`Server running on the port ${PORT}`);
     });
