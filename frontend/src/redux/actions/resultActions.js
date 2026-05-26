@@ -1,10 +1,11 @@
 // actions/examActions.js
 import axios from 'axios';
+import { apiUrl } from '../../config/api';
 import ErrorHandler from '../../components/ErrorHandler';
 
 // Base configuration for Axios
 const API = axios.create({
-    baseURL: process.env.BACKEND_URL || 'http://localhost:5000/api/result'  // Replace with your backend API URL
+    baseURL: apiUrl('/api/result'),
 });
 
 // Add a request interceptor

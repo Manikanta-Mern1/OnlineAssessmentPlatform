@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { apiUrl } from '../../config/api';
 import { toast } from 'react-toastify';
 import ErrorHandler from '../../components/ErrorHandler';
 
@@ -6,7 +7,7 @@ import { CREATE_QUESTION, DELETE_QUESTION, GET_QUESTIONS, UPDATE_QUESTION } from
 
 // Base configuration for Axios
 const API = axios.create({
-    baseURL: process.env.BACKEND_URL || 'http://localhost:5000/api/questions'  // Replace with your backend API URL
+    baseURL: apiUrl('/api/questions'),
 });
 
 // Add a request interceptor
