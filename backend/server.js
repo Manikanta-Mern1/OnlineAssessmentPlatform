@@ -28,10 +28,18 @@ const allowedOrigins = [
     "http://localhost:3000",
 ];
 
+const isOriginAllowed = (origin) => {
+    if (!origin) return true;
+    if (allowedOrigins.includes(origin)) return true;
+    // Netlify preview and production deploys
+    if (/^https:\/\/[\w-]+\.netlify\.app$/.test(origin)) return true;
+    return false;
+};
+
 app.use(
     cors({
         origin(origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
+            if (isOriginAllowed(origin)) {
                 callback(null, true);
             } else {
                 console.warn(`CORS blocked origin: ${origin}`);
