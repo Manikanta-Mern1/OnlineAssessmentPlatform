@@ -18,8 +18,6 @@ const bodyParser = require("body-parser");//body-parser is middleware used in an
 //env config
 require("dotenv").config();
 
-connectDB();//Your backend connects to MongoDB before handling any requests.
-
 const app = express();
 
 const allowedOrigins = [
@@ -66,9 +64,17 @@ app.use('/api/students', studenRoutes);
 app.use('/api/result', resultRoute)
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on the port ${PORT}`);
-})
 
-//sequence:-
-//load env--> call connectDB()-->DB connectd-->start express server-->now routes can safely use DB.
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(PORT, () => {
+            console.log(`Server running on the port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("Failed to start server:", error.message);
+        process.exit(1);
+    }
+};
+
+startServer();
