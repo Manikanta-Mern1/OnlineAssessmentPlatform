@@ -65,16 +65,33 @@ app.use('/api/result', resultRoute)
 
 const PORT = process.env.PORT || 5000;
 
-const startServer = async () => {
-    try {
-        await connectDB();
-        app.listen(PORT, () => {
-            console.log(`Server running on the port ${PORT}`);
-        });
-    } catch (error) {
-        console.error("Failed to start server:", error.message);
-        process.exit(1);
-    }
+const startServer = () => {
+    app.listen(PORT, () => {
+        console.log(`Server running on the port ${PORT}`);
+    });
+
+    const connectWithRetry = async () => {
+        const maxAttempts = 10;
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                await connectDB();
+                return;
+            } catch (error) {
+                console.error(
+                    `MongoDB attempt ${attempt}/${maxAttempts} failed:`,
+                    error.message
+                );
+                if (attempt < maxAttempts) {
+                    await new Promise((resolve) => setTimeout(resolve, 5000));
+                }
+            }
+        }
+        console.error(
+            "Could not connect to MongoDB. Check MONGO_URI on Render and Atlas network access."
+        );
+    };
+
+    connectWithRetry();
 };
 
 startServer();
